@@ -18,7 +18,7 @@ restoreGame =
                (x,y,z) -> (z :: Bool) `seq` return $ Left (x,y))
           (\ e -> case e of
                     _ -> return (Right $ "Restore failed: " ++
-                                 (unwords . lines) (show e)))
+                                 (unwords . lines) (show (e :: IOException))))
 
 saveGame :: Level -> State -> IO ()
 saveGame lvl state = encodeCompressedFile savefile (lvl,state,False)

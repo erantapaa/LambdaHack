@@ -199,7 +199,7 @@ handle session (lvl@(Level nm sz ms smap lmap lmeta))
   displayCurrent = displayLevel session nlvl per state
 
   -- update player memory
-  nlmap = foldr (\ x m -> M.update (\ (t,_) -> Just (t,t)) x m) lmap (S.toList visible)
+  nlmap = L.foldr (\ x m -> M.update (\ (t,_) -> Just (t,t)) x m) lmap (S.toList visible)
   nlvl = updateLMap lvl (const nlmap)
 
   -- update player action time, and regenerate hitpoints
@@ -259,7 +259,7 @@ handle session (lvl@(Level nm sz ms smap lmap lmeta))
   search abort =
     let searchTile (Tile (Door hv (Just n)) x,t') = Just $ (Tile (Door hv (Just (max (n - 1) 0))) x, t')
         searchTile t                              = Just t
-        slmap = foldl (\ l m -> update searchTile (shift ploc m) l) nlmap moves
+        slmap = L.foldl (\ l m -> update searchTile (shift ploc m) l) nlmap moves
     in  loop session (updateLMap lvl (const slmap)) nstate ""
   -- perform a level change
   lvlchange vdir abort =

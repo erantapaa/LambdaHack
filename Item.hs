@@ -77,7 +77,7 @@ assignLetter c is =
   where
     current    = S.fromList (concatMap (maybeToList . iletter) is)
     allLetters = ['a'..'z'] ++ ['A'..'Z']
-    candidates = take (length allLetters) (drop (fromJust (findIndex (==c) allLetters)) (cycle allLetters))
+    candidates = take (length allLetters) (drop (fromJust (L.findIndex (==c) allLetters)) (cycle allLetters))
 
 viewItem :: ItemType -> (Char, Attr -> Attr)
 viewItem Ring   = ('=', id)

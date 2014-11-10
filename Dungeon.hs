@@ -144,7 +144,7 @@ level cfg nm =
     let smap = M.fromList [ ((y,x),-100) | let (sy,sx) = levelSize cfg,
                                            y <- [0..sy], x <- [0..sx] ]
     let lmap :: LMap
-        lmap = foldr digCorridor (foldr digRoom (emptyLMap (levelSize cfg)) rooms) cs
+        lmap = L.foldr digCorridor (L.foldr digRoom (emptyLMap (levelSize cfg)) rooms) cs
     let lvl = Level nm (levelSize cfg) [] smap lmap "" 
     -- convert openings into doors
     dlmap <- fmap M.fromList . mapM
@@ -181,7 +181,7 @@ level cfg nm =
     return $ (\ lu ld ->
       let flmap = maybe id (\ l -> M.insert su (newTile (Stairs Up   l))) lu $
                   maybe id (\ l -> M.insert sd (newTile (Stairs Down l))) ld $
-                  foldr (\ (l,it) f -> M.update (\ (t,r) -> Just (t { titems = it : titems t }, r)) l . f) id is $
+                  L.foldr (\ (l,it) f -> M.update (\ (t,r) -> Just (t { titems = it : titems t }, r)) l . f) id is $
                   dlmap
       in  Level nm (levelSize cfg) [] smap flmap meta, su, sd)
 

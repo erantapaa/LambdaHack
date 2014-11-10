@@ -2,14 +2,17 @@ module Random (module Frequency, module Random) where
 
 import Data.Ratio
 import qualified System.Random as R
-import Control.Monad.State
+import Control.Monad.State.Lazy
 
 import Frequency
 
 type Rnd a = State R.StdGen a
 
 randomR :: (R.Random a) => (a, a) -> Rnd a
-randomR r = State (R.randomR r)
+randomR r = do g <- get
+               let (a,g') = R.randomR r g
+               put g'
+               return a
 
 binaryChoice :: a -> a -> Rnd a
 binaryChoice p0 p1 =
